@@ -1,0 +1,3 @@
+127.0.0.1
+joe
+#change ip to address of server. make up a username
