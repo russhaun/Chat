@@ -49,6 +49,7 @@ For bug reports or enhancements, please open an issue here https://github.com/ru
 ### Server
 - on the machine you decide to host the server on copy server exe and config.txt to place of your choosing, edit config.txt with the ip of server and how many clients u wish to accept. then double-click exe server will start listening for connections. when done properly you should receive this:
 
+![chat_server_sucess](https://user-images.githubusercontent.com/20805369/129812703-4b32fe8e-a55d-4e35-bb0d-a58eb89a7608.png)
 
 
 
@@ -56,5 +57,18 @@ For bug reports or enhancements, please open an issue here https://github.com/ru
 ### Client
 
 - copy client to place of your choosing edit chat_user.txt with ip of server and username of your choice. when client opens type connect to start session. Typing exit will close session and exit app.
+
+on opening the client just type connect in the space provided
+![chatclientconnect](https://user-images.githubusercontent.com/20805369/129812746-9ad3a516-d88d-4f70-9c1d-b2eefebf474b.png)
+
+
+on sucess you should see this:
+
+![chatconnectsucess](https://user-images.githubusercontent.com/20805369/129812845-8aa8d200-24ab-4c3c-94e7-afff1641cdfe.png)
+
+
+if for some reason the server is down or ip incorrect you should receive:
+
+![chatconnectfailure](https://user-images.githubusercontent.com/20805369/129812947-f8ae4474-c132-41de-9446-d095b6c9e1a4.png)
 
 
