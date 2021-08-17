@@ -59,6 +59,7 @@ For bug reports or enhancements, please open an issue here https://github.com/ru
 - copy client to place of your choosing edit chat_user.txt with ip of server and username of your choice. when client opens type connect to start session. Typing exit will close session and exit app.
 
 on opening the client just type connect in the space provided
+
 ![chatclientconnect](https://user-images.githubusercontent.com/20805369/129812746-9ad3a516-d88d-4f70-9c1d-b2eefebf474b.png)
 
 
