@@ -1,10 +1,6 @@
 Chat client/server v1.0
 
-<<<<<<< HEAD
-=======
 
-=======
->>>>>>> main
 chat server and client written with pyqt5 and python 3.
 compiled to an exe with pyinstaller 4
 
