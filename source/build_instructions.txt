@@ -1,0 +1,12 @@
+#Requirements
+
+windows 10 21h1 minimum
+windows 10 sdk
+pyinstaller 4.5.1
+python 3.6.6
+pyqt5
+
+
+navigate to source folder with cmd prompt. type 'pyinstaller ClientChatUI.spec'
+Files will be placed in 'finalbuild' folder this will be created during build if
+not present.
