@@ -7,6 +7,13 @@ python 3.6.6
 pyqt5
 
 
+#before building
+
+- please install win10toast from this repo. https://github.com/russhaun/Windows-10-Toast-Notifications.
+  as the one on pip does not have my changes. download repo navigate to folder and run 'python setup.py' 
+  to install. this allows callbacks from toasts to do other stuff
+
+
 navigate to source folder with cmd prompt. type 'pyinstaller ClientChatUI.spec'
 Files will be placed in 'finalbuild' folder this will be created during build if
 not present.
