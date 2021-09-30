@@ -4,7 +4,7 @@ Chat client/server v1.0
 chat server and client written with pyqt5 and python 3.
 compiled to an exe with pyinstaller 4
 
-### Client features:
+### Client features
 
 1. allows multiple clients good for small networks
 
@@ -14,13 +14,13 @@ compiled to an exe with pyinstaller 4
 
 4. basic help menu
 
-### Server features:
+### Server features
 
 1. it sends and receives messages to/from clients on network using TCP
 
 2. not much more to say
 
-### Planned client features:
+### Planned client features
 
 1. Windows Toast Notifications
 
@@ -30,6 +30,8 @@ compiled to an exe with pyinstaller 4
 
 4. any suggested features
 
+5. Linux support
+
 ### Supported platforms
 
 - Windows 10 21H1  Build 19043
@@ -38,12 +40,15 @@ compiled to an exe with pyinstaller 4
         might run on other OSe's have no clue.
         please lmk if it does or doesn't. will add more as it progresses
 
+### To build project
+
+- look @ 'build_instructions.txt' located in source folder
+
 ### Bugs and enhancements
 
 For bug reports or enhancements, please open an issue here https://github.com/russhaun/Chat/issues
 
-
-###  Usage:
+### Usage
 
 
 ### Server

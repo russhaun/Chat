@@ -1,0 +1,12 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/">
+        <file>src/icon/tray_icon_128.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>src/icon/window_icon_32.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>src/icon/chat_server.ico</file>
+    </qresource>
+</RCC>
