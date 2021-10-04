@@ -4,7 +4,12 @@
 from socket import AF_INET, socket, SOCK_STREAM
 from threading import Thread
 import time
-import win32console
+import os
+
+def is_windows():  # return windows or fail
+    return os.name == "nt"
+if is_windows():
+    import win32console
 #
 def get_time():
     '''returns local time for use in script'''
@@ -153,7 +158,8 @@ SERVER.bind(ADDR)
 
 if __name__ == "__main__":
     try:
-        win32console.SetConsoleTitle('Chat Server v1.0')
+        if is_windows():
+            win32console.SetConsoleTitle('Chat Server v1.0')
         SERVER.listen(int(conf[1]))
         log_event('console', "[#] Chat Server.....\n[#] Listening @ " + HOST +':'+ str(PORT)+"\n""[#] Max connections: "+ str(conf[1]))
         log_event('ui',"[*] Chat server has started..."+TIMENOW,False)
@@ -161,7 +167,9 @@ if __name__ == "__main__":
         #print("[#] Chat Server.....\n[#] Waiting for connection....." + HOST +':'+ str(PORT))
         ACCEPT_THREAD = Thread(target=accept_incoming_connections)
         ACCEPT_THREAD.start()
+        #ACCEPT_THREAD.join()
+        #SERVER.close()
+    except KeyboardInterrupt:
         ACCEPT_THREAD.join()
         SERVER.close()
-    except KeyboardInterrupt:
         print("Stopping Server.....")

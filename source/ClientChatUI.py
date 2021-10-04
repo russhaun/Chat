@@ -14,24 +14,33 @@ from PyQt5.QtCore import pyqtSlot, pyqtSignal, QRect, QUrl, Qt, QObject
 from socket import AF_INET, socket, SOCK_STREAM
 import subprocess
 import os
-import win10toast
-from pathlib import PureWindowsPath
+
+from pathlib import PurePosixPath, PureWindowsPath
 #import our resource file with icons and such
 import resources
 
+def get_home():
+    h = os.getcwd()
+    return h
+
 def is_windows():  # return windows or fail
     return os.name == "nt"
+
+def is_posix():
+    return os.name == "posix"
 #
-
+if is_posix():
+    pass
 if is_windows():
-    
+    import win10toast
    
-
+if is_posix or is_windows:
     def get_time():
         '''returns local time for use in script'''
         now = time.localtime()
         ascii = time.asctime(now)
         return(ascii)
+    HOME = os.path.dirname(__file__)
     WELCOME = 0
     TRACELOG = "Error_log.txt"
     CHATLOG = "chatclient_log.txt"
@@ -39,7 +48,7 @@ if is_windows():
     TIMENOW = get_time()
    
     
-    def log_event(source, event ,time=False):  # define logging for client to LOGFILE
+    def log_event(source: str, event: str ,time=False)-> None:  # define logging for client to LOGFILE
         '''handles logging of events based on destination. excepts chat,error,console as 
         source, followed by the event. time= var is for time stamping events assumes False
         allows for targeted events. If source is anything else value will go to ui log'''
@@ -58,7 +67,12 @@ if is_windows():
             with open(UILOG, 'a')as gui:
                 gui.write(event+"\n")     
     #####################################################################################
-    USERINFOFILE = "chat_user.txt"
+    #home = os.path.dirname(__file__)
+    USERINFOFILE = 'chat_user.txt'
+    if is_posix():
+        FILEPATH = PurePosixPath(HOME,USERINFOFILE)
+    if is_windows():
+        FILEPATH = PureWindowsPath(HOME,USERINFOFILE)
     USERINFO = []
     def get_user_info():  # Grabs user info for chat client
         '''opens 'chat_user.txt' to get auth info for chat client.File must be in . of script.
@@ -69,54 +83,56 @@ if is_windows():
         '''
         log_event('chat', "[*] Starting..... ", time=True)
         log_event('ui', "[*] Looking for chat_user.txt.....",False)
-        try:    
-            with open(USERINFOFILE, "r") as usrtemp:
-                log_event('ui',"[*] Found chat_user.txt.....",False)
-                for line in usrtemp:
-                    line = line.strip()
-                    USERINFO.append(line)
-            usrtemp.close()
-            return(USERINFO[0], USERINFO[1])
-            #
-        except FileNotFoundError as err:
-            print("[*] chat_user.txt was not found please make sure it is present....")
-            log_event('error', "[*] chat_user.txt was not found please make sure it is present....",False)
-            sys.exit()
+        if os.path.isfile(FILEPATH):
+            try:    
+                with open(FILEPATH, "r") as usrtemp:
+                    log_event('ui',"[*] Found chat_user.txt.....",False)
+                    for line in usrtemp:
+                        line = line.strip()
+                        USERINFO.append(line)
+                usrtemp.close()
+                return(USERINFO[0], USERINFO[1])
+                #
+            except FileNotFoundError as err:
+                print("[*] chat_user.txt was not found please make sure it is present....")
+                log_event('error', "[*] chat_user.txt was not found please make sure it is present....",False)
+                sys.exit()
     #####################################################################################
-    class ToastMessages(win10toast.ToastNotifier): # Custom class for enabling toast notifications
-        '''Inherits from main Class to add functions.Enables toast\balloon tips on windows 7/8/10 , 08/12/16'''
-        def __init__(self):
-            super().__init__()
-            pass
-        #
-        def grab_event_info(self):
-            #print('hey')
-            pass
+    if is_windows():
+        class ToastMessages(win10toast.ToastNotifier): # Custom class for enabling toast notifications
+            '''Inherits from main Class to add functions.Enables toast\balloon tips on windows 7/8/10 , 08/12/16'''
+            def __init__(self):
+                super().__init__()
+                pass
+            #
+            def grab_event_info(self):
+                #print('hey')
+                pass
 
-        def on_event(self):
-            self.grab_event_info()
-            
-        #
-        def get_icon_path(self):
-            '''override default icon with custom one. we pass this to showtoast as a path object'''
-            #setup blank icon
-            new_icon = ''
-            #change to icon dir
-            os.chdir("src\icon")
-            #set home path for directory
-            homedir = os.getcwd()
-            icon = 'tray_icon_128.png'
-            #icon = QIcon(':/src/icon/tray_icon_128.png')
-            #icon = 'toast_events_icon.ico'
-            #create path object to pass
-            icondir = PureWindowsPath(homedir,icon)
-            if os.path.isfile(icon):
-                new_icon = icondir
-            else:
-                #else fall back and use default of class
-                new_icon = None
-            print(new_icon)
-            return new_icon
+            def on_event(self):
+                self.grab_event_info()
+                
+            #
+            def get_icon_path(self):
+                '''override default icon with custom one. we pass this to showtoast as a path object'''
+                #setup blank icon
+                new_icon = ''
+                #change to icon dir
+                os.chdir("src\icon")
+                #set home path for directory
+                homedir = os.getcwd()
+                icon = 'tray_icon_128.png'
+                #icon = QIcon(':/src/icon/tray_icon_128.png')
+                #icon = 'toast_events_icon.ico'
+                #create path object to pass
+                icondir = PureWindowsPath(homedir,icon)
+                if os.path.isfile(icon):
+                    new_icon = icondir
+                else:
+                    #else fall back and use default of class
+                    new_icon = None
+                print(new_icon)
+                return new_icon
     #####################################################################################
     class Stream(QObject):  # Custom class for handling stdout
         '''class for handling stdout from print statements on imported code '''
@@ -152,7 +168,8 @@ if is_windows():
 
         def receive(self):
             """Handles receiving of messages."""
-            start_toast = ToastMessages()
+            if is_windows():
+                start_toast = ToastMessages()
             
             while True:
                 try:
@@ -163,16 +180,17 @@ if is_windows():
                         log_event('console', "recieved quit ok from server")
                     #build in logic to prevent certain msgs from being dislayed?
                     noprint = msg.find(self.user)
-                    if noprint == -1:
-                        start_toast.show_toast("Chat Client",
-                        msg,
-                        icon_path= None,
-                        duration=1,
-                        threaded=True,
-                        callback_on_click=start_toast.on_event()
-                        )
-                    else:
-                        pass
+                    if is_windows():
+                        if noprint == -1:
+                            start_toast.show_toast("Chat Client",
+                            msg,
+                            icon_path= None,
+                            duration=1,
+                            threaded=True,
+                            callback_on_click=start_toast.on_event()
+                            )
+                        else:
+                            pass
                 except OSError as e:
                     log_event('error', "[!] The server might be down or you quit your session.....",False)
                     log_event('console',"[!] The server might be down or you quit your session.\n[*] check the logs for more info",False)
