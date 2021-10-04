@@ -1,4 +1,4 @@
-Chat client/server v1.0
+Chat client/server v1.8
 
 
 chat server and client written with pyqt5 and python 3.
